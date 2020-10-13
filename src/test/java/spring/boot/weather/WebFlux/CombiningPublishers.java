@@ -7,13 +7,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.function.Function;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CombiningPublishers {
+
+	@Test
+	public void zipTest() {
+		Flux.zip(
+				Flux.just(1, 5, 7, 10),
+				Flux.just(2, 3, 4)
+		).subscribe(System.out::println);
+	}
 
 	@Test
 	public void zipArrayTest() {
@@ -21,14 +27,6 @@ public class CombiningPublishers {
 				Flux.just(1, 5, 7, 10),
 				Flux.just(2, 3, 4),
 				Integer::sum
-		).subscribe(System.out::println);
-	}
-
-	@Test
-	public void zipSumTest() {
-		Flux.zip(
-				Flux.just(1, 5, 7, 10),
-				Flux.just(2, 3, 4)
 		).subscribe(System.out::println);
 	}
 
@@ -77,6 +75,16 @@ public class CombiningPublishers {
 	}
 
 	@Test
+	public void mergeDelayError2Test() {
+		Flux.mergeDelayError(32,
+				Flux.error(new Exception("BOOM!")),
+				Flux.just("a", "b", "c").delayElements(Duration.ofNanos(1L)),
+				Flux.just("1", "2", "3").delayElements(Duration.ofNanos(2L)),
+				Flux.error(new Exception("BOOM2!"))
+		).subscribe(System.out::println);
+	}
+
+	@Test
 	public void mergeOrderedTest() {
 		Flux.mergeOrdered(Comparator.naturalOrder(),
 				Flux.just(2, 5, 7),
@@ -89,16 +97,5 @@ public class CombiningPublishers {
 				Flux.just(2, 5, 7).mergeOrderedWith(Flux.just(6, 3, 4),
 				Comparator.naturalOrder()
 		).subscribe(System.out::println);
-	}
-
-
-	@Test
-	public void transformTest() {
-		Function<Flux<String>, Flux<String>> filterAndMap =
-				f -> f.filter(color -> !color.equals("orange"))
-						.map(String::toUpperCase);
-		Flux.fromIterable(Arrays.asList("blue", "green", "orange", "purple"))
-				.transform(filterAndMap)
-				.subscribe(d -> System.out.println("MapAndFilter for: " + d));
 	}
 }

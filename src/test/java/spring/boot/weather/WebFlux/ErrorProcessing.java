@@ -64,6 +64,6 @@ public class ErrorProcessing {
     }
 
     private Flux<Integer> cachedNumber(){
-        return Flux.just(5);
+       return Flux.range(5, 6);
     }
 }

@@ -19,7 +19,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class FunctionalServer {
 
     @Bean
-    public RouterFunction<?> routerFunctionA() {
+    public RouterFunction<ServerResponse> routerFunctionA() {
         return route()
                 .GET("/userinfo", accept(APPLICATION_JSON), this::getUserRoute)
                 .POST("/addUser", accept(APPLICATION_JSON), this::addUserRoute)

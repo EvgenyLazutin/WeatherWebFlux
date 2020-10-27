@@ -10,10 +10,12 @@ import java.util.stream.IntStream;
 
 import static java.time.Duration.ofMillis;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class DataStreamModification {
 
+public class P02_DataStreamModification {
+
+    /*
+    * Map example
+    * */
     @Test
     public void mapStream() {
         IntStream.range(5, 8)
@@ -28,6 +30,33 @@ public class DataStreamModification {
                 .subscribe(i -> System.out.printf("i=%s%n", i));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * FlatMap example
+     * */
     @Test
     public void flatMapStream() {
         IntStream.range(5, 8)
@@ -42,6 +71,29 @@ public class DataStreamModification {
                 .subscribe(i -> System.out.printf("i=%s%n", i));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * Filter example
+     * */
     @Test
     public void filterStream() {
         IntStream.range(5, 16)
@@ -56,6 +108,30 @@ public class DataStreamModification {
                 .subscribe(i -> System.out.printf("i=%s%n", i));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * Reduce example
+     * */
     @Test
     public void reduceStream() {
         IntStream.range(5, 8)

@@ -10,11 +10,18 @@ import reactor.core.publisher.Mono;
 import java.util.stream.IntStream;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class DesignForFailure {
+public class P03_DesignForFailure {
 
+    private int checkNumber(int value) {
+        if (value == 5) {
+            throw new RuntimeException("Booom!!!!");
+        }
+        return value;
+    }
 
+    /*
+     * Try-catch example
+     * */
     @Test
     public void tryCatchTest() {
         try {
@@ -34,35 +41,55 @@ public class DesignForFailure {
                 .subscribe(i -> System.out.printf("i=%s%n", i));
     }
 
-    @Test
-    public void tryCatchFinallyTest() {
-        try {
-            IntStream.range(1, 10)
-                    .map(this::checkNumber)
-                    .forEach(i -> System.out.printf("i=%s%n", i));
-        } catch (Exception ex) {
-            System.out.println("Ups!");
-        } finally {
-            System.out.println("finally!!");
-        }
-    }
 
-    @Test
-    public void doFinallyTestWithError() {
-        Flux.range(1, 10)
-                .map(this::checkNumber)
-                .doFinally(i -> System.out.printf("Finally: %s", i))
-                .subscribe(i -> System.out.printf("i=%s%n", i));
-    }
 
-    @Test
-    public void doFinallyTestSuccess() {
 
-        Flux.range(1, 10)
-                .doFinally(i -> System.out.printf("Finally: %s", i))
-                .subscribe(i -> System.out.printf("i=%s%n", i));
-    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * onErrorReturn, onErrorResume example
+     * */
     @Test
     public void onErrorReturnTest() {
         Flux.range(1, 10)
@@ -80,6 +107,34 @@ public class DesignForFailure {
                 .subscribe(i -> System.out.printf("i=%s%n", i));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * switchIfEmpty example
+     * */
     @Test
     public void switchIfEmptyTest() {
         Mono.empty()
@@ -88,24 +143,9 @@ public class DesignForFailure {
                 .subscribe(s -> System.out.printf("finish: %s", s));
     }
 
-    @Test
-    public void switchIfEmptyTest2() {
-        Mono.just("Old Object")
-                .doOnNext(System.out::println)
-                .switchIfEmpty(createNewPublisher())
-                .subscribe(s -> System.out.printf("finish: %s", s));
-    }
-
     private Mono<String> createNewPublisher() {
         System.out.println("Inside method createNewPublisher");
         return Mono.just("New Object");
-    }
-
-    private int checkNumber(int value) {
-        if (value == 5) {
-            throw new RuntimeException("Booom!!!!");
-        }
-        return value;
     }
 
     private Flux<Integer> cachedNumber() {

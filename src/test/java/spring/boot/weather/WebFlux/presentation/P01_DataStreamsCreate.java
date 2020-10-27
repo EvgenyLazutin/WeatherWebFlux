@@ -14,10 +14,12 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class DataStreamsCreate {
+public class P01_DataStreamsCreate {
 
+
+    /*
+     * Create from array
+     * */
     @Test
     public void arrayStream() {
         Stream<String> str = Stream.of("a", "b", "c");
@@ -29,6 +31,33 @@ public class DataStreamsCreate {
         Flux<String> str = Flux.just("a", "b", "c");
         str.subscribe(System.out::println);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * Create from Collection
+     * */
 
     @Test
     public void iterableStream() {
@@ -44,6 +73,37 @@ public class DataStreamsCreate {
         str.subscribe(System.out::println);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+     * Generate
+     * */
     @Test
     public void rangeStream() {
         IntStream range = IntStream.range(5, 8);
@@ -55,20 +115,4 @@ public class DataStreamsCreate {
         Flux<Integer> range = Flux.range(5, 3);
         range.subscribe(System.out::println);
     }
-
-    @Test
-    public void publisherFromPublisher() {
-        Publisher<String> publisher = Flux.just("1", "2", "3");
-        Mono<String> fromPublisher = Mono.from(publisher);
-        fromPublisher.subscribe(System.out::println);
-    }
-
-    @Test
-    public void publisherFromSteam() {
-        Stream<String> str = Stream.of("a", "b", "c");
-        Flux<String> publisherFromStream = Flux.fromStream(str);
-        publisherFromStream.subscribe(System.out::println);
-    }
-
-
 }

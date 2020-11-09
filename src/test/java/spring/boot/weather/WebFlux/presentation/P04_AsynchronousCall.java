@@ -9,74 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Log4j2
 public class P04_AsynchronousCall {
-    /*
-     * Lazy example
-     * */
-    @Test
-    public void streamExecutionExample() {
-
-        Stream<String> str = Stream.of("a", "b", "c").peek(p-> System.out.println("Output stream: " + p));
-        System.out.println("Nothing!");
-    }
-
-    @Test
-    public void streamExecutionWorkExample() {
-
-        List<String> str = Stream.of("a", "b", "c").peek(p-> System.out.println("Output stream: " + p)).collect(Collectors.toList());
-        System.out.println("Done!");
-    }
-
-    @Test
-    public void completableFutureExample() {
-        CompletableFuture<Void> future = CompletableFuture
-                .runAsync(() -> System.out.println("!!!Inside CompletableFuture!!!"));
-    }
-
-    @Test
-    public void publisherExecutionExample() {
-
-        Flux<String> str = Flux.just("a", "b", "c").doOnNext(p-> System.out.println("Output publisher: " + p));
-        System.out.println("Nothing!");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /*
      * asynchronous work
@@ -90,7 +26,7 @@ public class P04_AsynchronousCall {
     }
 
     @Test
-    public void publishOnTest() {
+    public void publishOnTest() throws InterruptedException {
 
         final Flux<String> flux = Flux
                 .range(1, 2)
@@ -105,10 +41,12 @@ public class P04_AsynchronousCall {
                 });
 
         flux.subscribe(log::info);
+
+        Thread.sleep(2000);
     }
 
     @Test
-    public void subscribeOnTest() {
+    public void subscribeOnTest() throws InterruptedException {
 
         final Flux<String> flux = Flux
                 .range(1, 2)
@@ -123,5 +61,7 @@ public class P04_AsynchronousCall {
                 });
 
         flux.subscribe(log::info);
+
+        Thread.sleep(2000);
     }
 }
